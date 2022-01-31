@@ -1,7 +1,7 @@
-script: "/pointer_lock/cursor_ui.gui_script"
+script: "/cursor_lock/cursor_ui.gui_script"
 textures {
   name: "ui"
-  texture: "/pointer_lock/assets/cursor_ui.atlas"
+  texture: "/cursor_lock/assets/cursor_ui.atlas"
 }
 background_color {
   x: 0.0

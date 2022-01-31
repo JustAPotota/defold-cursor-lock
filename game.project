@@ -16,7 +16,7 @@ vsync = 0
 input_method = HiddenInputField
 
 [project]
-title = pointer_lock_example
+title = cursor-lock-example
 developer = Indiesoft LLC
 version = 1.0.0
 
@@ -38,5 +38,5 @@ scale_mode = fit
 game_binding = /builtins/input/all.input_bindingc
 
 [library]
-include_dirs = pointer_lock
+include_dirs = cursor_lock
 

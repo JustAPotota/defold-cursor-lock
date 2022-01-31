@@ -1,5 +1,5 @@
-var LibraryDefPointerLock = {
-    $DefPointerLock: {
+var LibraryDefCursorLock = {
+    $DefCursorLock: {
         _onPointerLockChange: null,
         onPointerLockChange: function () {
             var locked =
@@ -7,19 +7,19 @@ var LibraryDefPointerLock = {
                     document.mozPointerLockElement ||
                     document.webkitPointerLockElement ||
                     document.msPointerLockElement) == Module.canvas;
-            {{{ makeDynCall('vi', 'DefPointerLock._onPointerLockChange') }}}(locked);
+            {{{ makeDynCall('vi', 'DefCursorLock._onPointerLockChange') }}}(locked);
         },
         onPointerLockError: function (e) {
             console.log("onPointerLockError", e);
         },
         _onCanvasClick: null,
         onCanvasClick: function (e) {
-            {{{ makeDynCall('vi', 'DefPointerLock._onCanvasClick') }}}();
+            {{{ makeDynCall('vi', 'DefCursorLock._onCanvasClick') }}}();
         },
     },
 
-    DefPointerLock_Init: function (onChange, onClick) {
-        var self = DefPointerLock;
+    DefCursorLock_Init: function (onChange, onClick) {
+        var self = DefCursorLock;
         self._onPointerLockChange = onChange;
         self._onCanvasClick = onClick;
 
@@ -40,8 +40,8 @@ var LibraryDefPointerLock = {
         Module.canvas.addEventListener("click", self.onCanvasClick);
     },
 
-    DefPointerLock_Final: function () {
-        var self = DefPointerLock;
+    DefCursorLock_Final: function () {
+        var self = DefCursorLock;
         self._onPointerLockChange = null;
 
         if ("onpointerlockchange" in document) {
@@ -61,7 +61,7 @@ var LibraryDefPointerLock = {
         Module.canvas.removeEventListener("click", self.onCanvasClick);
     },
 
-    DefPointerLock_RequestPointerLock: function () {
+    DefCursorLock_RequestCursorLock: function () {
         (
             Module.canvas.requestPointerLock ||
             Module.canvas.mozRequestPointerLock ||
@@ -71,7 +71,7 @@ var LibraryDefPointerLock = {
         ).call(Module.canvas);
     },
 
-    DefPointerLock_ExitPointerLock: function () {
+    DefCursorLock_ExitCursorLock: function () {
         (
             document.exitPointerLock ||
             document.mozExitPointerLock ||
@@ -82,5 +82,5 @@ var LibraryDefPointerLock = {
     },
 };
 
-autoAddDeps(LibraryDefPointerLock, "$DefPointerLock");
-mergeInto(LibraryManager.library, LibraryDefPointerLock);
+autoAddDeps(LibraryDefCursorLock, "$DefCursorLock");
+mergeInto(LibraryManager.library, LibraryDefCursorLock);

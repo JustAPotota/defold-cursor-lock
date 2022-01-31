@@ -1,9 +1,9 @@
 images {
-  image: "/pointer_lock/assets/images/cursor.png"
+  image: "/cursor_lock/assets/images/cursor.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/pointer_lock/assets/images/empty.png"
+  image: "/cursor_lock/assets/images/empty.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 margin: 0
