@@ -7,7 +7,7 @@
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-	<title>pointer_lock_example 1.0.0</title>
+	<title>cursor-lock-example 1.0.0</title>
 	<style type='text/css'>
 	/* Disable user selection to avoid strange bug in Chrome on Windows:
 	* Selecting a text outside the canvas, then clicking+draging would
@@ -179,7 +179,7 @@
 		// dmengine*.wasm is hardcoded in the built JS loader for WASM,
 		// we need to replace it here with the correct project name.
 		if (path == "dmengine.wasm" || path == "dmengine_release.wasm" || path == "dmengine_headless.wasm") {
-			path = "pointer_lock_example.wasm";
+			path = "cursorlockexample.wasm";
 		}
 		return scriptDirectory + path;
 	};
@@ -240,7 +240,7 @@
 	</script>
 
 	<script id='engine-start' type='text/javascript'>
-		EngineLoader.load("canvas", "pointer_lock_example");
+		EngineLoader.load("canvas", "cursorlockexample");
 	</script>
 </body>
 </html>
