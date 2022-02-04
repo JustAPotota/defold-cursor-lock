@@ -12,17 +12,22 @@ local function lock_cursor()
             cursor.locked = true
             cursor_lock_ext.glfw_mouse_lock()
         end
+        return true
     end
+    return false
 end
 
 local function unlock_cursor()
-    if cursor.locked then
-        if html5 then
+    if html5 then
+        if cursor.locked then
             cursor_lock_ext.html5_exit_cursor_lock()
-        else
-            cursor.locked = false
-            cursor_lock_ext.glfw_mouse_unlock()
+            return true
         end
+    else
+        local was_locked = cursor.locked
+        cursor.locked = false
+        cursor_lock_ext.glfw_mouse_unlock()
+        return was_locked
     end
 end
 
@@ -33,28 +38,17 @@ function init(self)
     
     cursor.locked = false
     cursor_lock_ext.glfw_mouse_unlock()
-
-    --[[if html5 then
-        cursor_lock_ext.html5_on_click(function()
-            if not cursor.locked then
-                cursor_lock_ext.html5_request_cursor_lock()
-            end
-        end)
-    end]]
 end
 
 function final(self)
     cursor.locked = false
     cursor_lock_ext.glfw_mouse_unlock()
-
-    if html5 then
-        cursor_lock_ext.html5_on_click(nil)
-    end
 end
 
 function update(self, dt)
-    if html5 then
-        cursor.locked = cursor_lock_ext.html5_cursor_locked()
+    -- Check if our cursor lock request was accepted
+    if html5 and not cursor.locked and cursor_lock_ext.html5_cursor_locked() then
+        cursor.locked = true
     end
 end
 
@@ -62,30 +56,19 @@ function on_message(self, message_id, message, sender)
 end
 
 function on_input(self, action_id, action)
-    --[[if html5 then
-        if cursor.locked and action_id == self.unlock_action_id and action.released then
-            unlock_cursor()
+    -- For some reason, pressing escape while locked makes the browser unlock the cursor,
+    -- but Defold doesn't receive the input event
+    -- So we instead check for the cursor getting unlocked here
+    if html5 and cursor.locked and not cursor_lock_ext.html5_cursor_locked() then
+        cursor.locked = false
+        return true
+    end
 
-            return true
-        end
-    else
-        if action_id == self.unlock_action_id and action.released then
-            local skip_events = cursor.locked
-            unlock_cursor()
-
-            return skip_events
-        elseif action_id == self.click_action_id and action.released then
-            local skip_events = cursor.locked
-            lock_cursor()
-
-            return skip_events
-        end
-    end]]
     if action.pressed then
         if action_id == self.click_action_id then
-            lock_cursor()
+            return lock_cursor()
         elseif action_id == self.unlock_action_id then
-            unlock_cursor()
+            return unlock_cursor()
         end
     end
 end
