@@ -4,33 +4,6 @@ go.property("acquire_input_focus", true)
 go.property("click_action_id", hash("touch"))
 go.property("unlock_action_id", hash("key_esc"))
 
-local function lock_cursor()
-    if not cursor.locked then
-        if html5 then
-            cursor_lock_ext.html5_request_cursor_lock()
-        else
-            cursor.locked = true
-            cursor_lock_ext.glfw_mouse_lock()
-        end
-        return true
-    end
-    return false
-end
-
-local function unlock_cursor()
-    if html5 then
-        if cursor.locked then
-            cursor_lock_ext.html5_exit_cursor_lock()
-            return true
-        end
-    else
-        local was_locked = cursor.locked
-        cursor.locked = false
-        cursor_lock_ext.glfw_mouse_unlock()
-        return was_locked
-    end
-end
-
 function init(self)
     if self.acquire_input_focus then
         msg.post(".", "acquire_input_focus")
@@ -42,7 +15,7 @@ end
 
 function final(self)
     cursor.locked = false
-    cursor_lock_ext.glfw_mouse_unlock()
+    --cursor_lock_ext.glfw_mouse_unlock()
 end
 
 function update(self, dt)
@@ -66,9 +39,9 @@ function on_input(self, action_id, action)
 
     if action.pressed then
         if action_id == self.click_action_id then
-            return lock_cursor()
+            return cursor.lock()
         elseif action_id == self.unlock_action_id then
-            return unlock_cursor()
+            return cursor.unlock()
         end
     end
 end

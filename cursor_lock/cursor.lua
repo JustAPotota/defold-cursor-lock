@@ -20,4 +20,31 @@ function M.transform_input(action_id, action)
     return action_id, action
 end
 
+function M.lock()
+    if not M.locked then
+        if html5 then
+            cursor_lock_ext.html5_request_cursor_lock()
+        else
+            M.locked = true
+            cursor_lock_ext.glfw_mouse_lock()
+        end
+        return true
+    end
+    return false
+end
+
+function M.unlock()
+    if html5 then
+        if M.locked then
+            cursor_lock_ext.html5_exit_cursor_lock()
+            return true
+        end
+    else
+        local was_locked = M.locked
+        M.locked = false
+        cursor_lock_ext.glfw_mouse_unlock()
+        return was_locked
+    end
+end
+
 return M
